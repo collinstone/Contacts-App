@@ -1,0 +1,91 @@
+{
+  "contacts": [
+    {
+      "id": "8f3a",
+      "name": "AMAKA",
+      "email": "amaka@test.com",
+      "userId": "1",
+      "phone": "08053789833"
+    },
+    {
+      "id": "7d44",
+      "name": "collins",
+      "email": "augustinecollins11@gmail.com",
+      "userId": "1",
+      "phone": "07065748404"
+    },
+    {
+      "id": "d6ca",
+      "name": "collins",
+      "email": "augustinecollins11@gmail.com",
+      "userId": "12ea",
+      "phone": "07065748404"
+    },
+    {
+      "id": "9101",
+      "name": "Augustine Collins Chinonso",
+      "email": "augustinecollins11@gmail.com",
+      "userId": "12ea",
+      "phone": "07065748404"
+    },
+    {
+      "id": "5699",
+      "name": "Mr Chilaka",
+      "email": "augustinecollins11@gmail.com",
+      "userId": "12ea",
+      "phone": "08039349202"
+    },
+    {
+      "id": "9ba6",
+      "name": "Augustine Collins Chinonso",
+      "email": "augustinecollins11@gmail.com",
+      "userId": "3e05",
+      "phone": "07065748404"
+    },
+    {
+      "id": "e832",
+      "name": "collins",
+      "email": "augustinecollins11@gmail.com",
+      "userId": "3e05",
+      "phone": "08037775942"
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "name": "user1",
+      "email": "user1@gmail.com",
+      "password": "123456"
+    },
+    {
+      "id": "b587",
+      "email": "augustinecollins11@gmail.com",
+      "name": "collins",
+      "password": "queen"
+    },
+    {
+      "id": "12ea",
+      "email": "augustinecollins11@gmail.com",
+      "name": "collins",
+      "password": "game"
+    },
+    {
+      "id": "c7e0",
+      "email": "newuser@example.com",
+      "name": "New User",
+      "password": "abc123"
+    },
+    {
+      "id": "410c",
+      "email": "augustineadaolisa51@gmail.com",
+      "name": "chinonso",
+      "password": "070654"
+    },
+    {
+      "id": "3e05",
+      "email": "evelyn123@gmail.com",
+      "name": "Eveyln Nwachukwu",
+      "password": "99999"
+    }
+  ]
+}
