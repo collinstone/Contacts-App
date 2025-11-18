@@ -30,7 +30,6 @@ export const ContactWidget: React.FC<ContactWidgetProps> = ({
           {fullName}
         </h2>
         <div className="flex space-x-3">
-        <Link href = {"./editform"}>
           <button
             type="button"
             onClick={onEdit}
@@ -39,7 +38,6 @@ export const ContactWidget: React.FC<ContactWidgetProps> = ({
           >
             <PencilSquareIcon className="h-5 w-5" />
           </button>
-        </Link>
           <button
             type="button"
             onClick={onDelete}
