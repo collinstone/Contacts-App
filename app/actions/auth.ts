@@ -1,11 +1,11 @@
 "use server"
 
 import { deleteSession, setSession } from "@/_lib/session";
-import { UserType } from "@/_types/user";
-import axios from "axios";
 import { redirect } from "next/navigation"; 
+import { prisma } from "@/_lib/prisma";
+import bcrypt from "bcryptjs";
 
-const API_URL = "http://localhost:3001";
+const prismaC = prisma;
 
 export const loginAction = async(formData: FormData) => {
 
@@ -19,12 +19,17 @@ export const loginAction = async(formData: FormData) => {
   }
 
     try{
-        const response = await axios.get (`${API_URL}/users?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
-        const user: UserType = response.data[0];
-       if (!user || user.password !== formData.get("password")) {
+        const user = await prismaC.user.findUnique({ where: { email } });
+
+       if (!user) {
             throw new Error("Invalid credentials");
         }
-        // Set session cookie
+
+          const valid = await bcrypt.compare(password, user.password);
+          if (!valid) {
+            throw new Error("Invalid credentials");
+        }
+       // Set session cookie
         await setSession({name: user.name, email: user.email, id: user.id});
     } catch (err) {
         console.error("loginAction error:", err);

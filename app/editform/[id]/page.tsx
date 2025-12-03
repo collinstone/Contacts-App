@@ -1,5 +1,6 @@
 // app/_components/EditForm.tsx
 "use client";
+import { updateContact } from '@/app/actions/db_action';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import React, { useState } from "react";
@@ -11,6 +12,14 @@ interface EditFormProps {
   defaultPhone: string;
 }
 
+
+export interface ContactUpdateInput {
+  contactId: string;
+  name: string;
+  email: string;
+  phone: string;
+}
+
 export default function EditForm({
   defaultName,
   defaultEmail,
@@ -18,7 +27,7 @@ export default function EditForm({
 }: EditFormProps) {
   const params = useParams<{ id: string }>();
   const userId = params.id;
-  const API_URL = `http://localhost:3001/contacts/${userId}`;
+  
   
   const router = useRouter();
 
@@ -35,27 +44,23 @@ const [phone, setPhone] = useState(defaultPhone ?? "");
     setIsSubmitting(true);
     setError(null);
 
+    
+  const input: ContactUpdateInput = {
+    contactId: userId,
+    name: name,
+    email: email,
+    phone: phone
+  }
+
     try {
-      const res = await fetch(API_URL, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone }),
-      });
-
-      if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || "Failed to update contact");
-      }
-
-      // Navigate back to the contacts list (or wherever)
-      router.push("/contact");
-    } catch (err: any) {
-      setError(err.message || "Something went wrong");
-      console.error("Failed to update contact", err);
-    } finally {
-      setIsSubmitting(false);
-    }
+        await updateContact(input)
+      } catch (error) {
+        console.error("Error editing contact:", error);
+        throw error;
   };
+  // Navigate back to the contacts list (or wherever)
+      router.push("/contact");
+}
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg">

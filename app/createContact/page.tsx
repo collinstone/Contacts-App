@@ -1,34 +1,34 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { saveContactToDB } from "../actions/saveContactToDB";
+import { saveContactsAction } from "../actions/saveContactToDB";
 
 export default function CreateContact() {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-
-    try {
-      await saveContactToDB(formData);
-      router.push("/contact"); // or correct path
-    } catch (err: any) {
-      console.error("Error while saving contact:", err);
-      setError(err.message || "Contact not saved");
-    }
-  };
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow-md min-h-screen">
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form
+        // Use Server Action as the form's action directly
+        action={async (formData: FormData) => {
+          try {
+            setError(null); // reset error on submit
+            await saveContactsAction(formData);
+            // redirect handled server-side in the action
+          } catch (err: any) {
+            console.error("Error saving contact:", err);
+            setError(err.message || "Failed to save contact");
+            
+          }
+        }}
+        className="space-y-4"
+      >
         {error && (
           <div className="text-red-600 text-sm">
             {error}
           </div>
         )}
+
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700">
             Name
@@ -42,7 +42,7 @@ export default function CreateContact() {
             required
           />
         </div>
-        
+
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">
             Email
@@ -81,3 +81,6 @@ export default function CreateContact() {
     </div>
   );
 }
+
+
+

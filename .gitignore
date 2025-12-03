@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Ignore environment files with secrets
+.env
+.env.local
+.env.*.local
+
+
+/app/generated/prisma
+
+/app/generated/prisma

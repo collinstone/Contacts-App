@@ -29,13 +29,6 @@
       "phone": "07065748404"
     },
     {
-      "id": "5699",
-      "name": "Mr Chilaka",
-      "email": "augustinecollins11@gmail.com",
-      "userId": "12ea",
-      "phone": "08039349202"
-    },
-    {
       "id": "9ba6",
       "name": "Augustine Collins Chinonso",
       "email": "augustinecollins11@gmail.com",
@@ -48,6 +41,27 @@
       "email": "augustinecollins11@gmail.com",
       "userId": "3e05",
       "phone": "08037775942"
+    },
+    {
+      "id": "4346",
+      "name": "Smart",
+      "email": "smart1113@gmail.com",
+      "userId": "12ea",
+      "phone": "09166756242"
+    },
+    {
+      "id": "250b",
+      "name": "Augustine Collins Chinonso",
+      "email": "augustinecollins11@gmail.com",
+      "userId": "e4cd",
+      "phone": "07065748404"
+    },
+    {
+      "id": "0e4a",
+      "name": "Rejoice",
+      "email": "rejoice22@gmail.com",
+      "userId": "e4cd",
+      "phone": "07036478894"
     }
   ],
   "users": [
@@ -86,6 +100,12 @@
       "email": "evelyn123@gmail.com",
       "name": "Eveyln Nwachukwu",
       "password": "99999"
+    },
+    {
+      "id": "e4cd",
+      "email": "dalyoopgang23@gmail.com",
+      "name": "Dalyop Chung Gangs",
+      "password": "12345"
     }
   ]
 }

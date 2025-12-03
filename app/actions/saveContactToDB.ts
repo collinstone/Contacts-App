@@ -1,39 +1,83 @@
+'use server';
+
 import { getSession } from "@/_lib/session";
 import { UserType } from "@/_types/user";
-import axios from "axios";
+import { prisma } from "@/_lib/prisma";
+import { encryptData, decryptData} from "../utils/crypto";
+import { redirect } from "next/navigation";
 
-export const saveContactToDB = async(formData: FormData) :Promise<void> => {
-    const API_URL = "http://localhost:3001";
-    const session =  await getSession();
-    if (!session) {
-        throw new Error("User not authenticated");
+const prismaC = prisma;
+
+export const saveContactsAction = async (formData: FormData) => {
+  // 1. Get the authenticated user session
+  console.log(Object.fromEntries(formData.entries()))
+  const session = await getSession();
+  if (!session) {
+    throw new Error(String("User not authenticated"));
+  }
+  const user = session as UserType;
+  const userId = user.id;
+
+  // 2. Retrieve user from database to get password
+  const existingUser = await prismaC.user.findUnique({ where: { id: userId } });
+  if (!existingUser) {
+    throw new Error(String("Authenticated user not found in database"));
+  }
+  const userPassword = existingUser.password;
+  if (!userPassword) {
+    throw new Error(String("User password not found"));
+  }
+
+ // 3. Extract contact data from form
+const name = formData.get("name")?.toString() ?? "";
+const email = formData.get("email")?.toString() ?? "";
+const phone = formData.get("phone")?.toString() ?? "";
+
+if (!name || !email || !phone) {
+  throw new Error(String("All fields are required"));
+}
+
+const userInfo = {
+  name: name,
+  email: email,
+  phone: phone
+};
+
+  // 4. Encrypt the contact data
+  let encryptedData: any = null;
+  try {
+    encryptedData = await encryptData(userPassword, userInfo);
+  } catch (error) {
+    console.error("Encryption error:", error);
+    throw new Error(String("Failed to encrypt contact data"));
+  }
+
+  if (!encryptedData) {
+    throw new Error(String("Encryption returned no data"));
+    
+  }
+
+  const payload = {
+      salt: String(encryptedData.salt),
+      iv: String(encryptedData.iv),
+      ct: String(encryptedData.ct)
     }
-    const user = session as UserType;
-    const userId = user.id;
-            
-        // Example: extract data from formData
-        const name = formData.get("name");
-        const email = formData.get("email");
-        const phone = formData.get("phone");
+  console.log("Payload to save:", payload);
 
-        if (!name || !email || !phone) {
-            throw new Error("Missing contact data");
-        }
-        // Here you would typically interact with your database to save the contact
-       
-    try{
-        await axios.post(`${API_URL}/contacts`, {
-            name: name,
-            email: email,
-            userId: userId,
-            phone: phone
-        });
-        console.log(`Contact saved for user ${userId}: ${name}, ${email}, ${phone}`);
-       
-    } catch (error) {
-        const err = error as any;
-        console.error("saveContactToDB error detail:", err.response?.data ?? error);
-        throw new Error("Contact not Saved");
-        
-}
-}
+  // 5. Save encrypted contact to database
+  try {
+    await prismaC.contact.create({
+      data: {
+        userId,
+        payload // Prisma JSON field
+      },
+    });
+    console.log("Contact saved successfully");
+  } catch (error) {
+    console.error("Failed to save contact:", error);
+    throw new Error(String("Failed to save contact"));
+  }
+
+  // 6. Redirect to contact page after successful save
+  redirect("/contact");
+};

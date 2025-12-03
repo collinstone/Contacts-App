@@ -1,9 +1,10 @@
 "use server"
-import axios from "axios";
-import { redirect } from "next/navigation"; 
+import { prisma } from "@/_lib/prisma";
 import { loginAction } from "./auth";
+import bcrypt from "bcryptjs";
+import { Prisma } from "@prisma/client";
 
-const API_URL = "http://localhost:3001";
+const prismaC = prisma;
 
 export const registerAction = async(formData: FormData) :Promise<void> => {
 
@@ -17,12 +18,11 @@ export const registerAction = async(formData: FormData) :Promise<void> => {
     throw new Error("Name, Email, and password must be provided");
   }
 
+   const hashedPassword = await bcrypt.hash(password, 10);
+
     try{
-        await axios.post(`${API_URL}/users`, {
-            email: email,
-            name: name,
-            password: password 
-        });
+      
+        await prismaC.user.create({ data: {name, email, password: hashedPassword} });
         console.log("User registered successfully");
        
     } catch (error) {
