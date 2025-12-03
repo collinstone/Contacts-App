@@ -5,7 +5,8 @@ import { prisma } from "@/_lib/prisma";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { decryptData, encryptData } from "../utils/crypto";
-import type { Contact as DbContact } from "@prisma/client";
+import type { Contact as DbContact } from "../generated/prisma/client";
+
 
 export interface DecryptedContact {
   id: string;
