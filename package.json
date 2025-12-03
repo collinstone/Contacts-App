@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "check-env": "node scripts/check-env.js",
-    "build": "npm run check-env && npx prisma generate && next build",
+    "build": " tsc check-env.ts --outDir build-scripts && node build-scripts/check-env.js && npx prisma generate && next build",
+
     "start": "next start",
     "lint": "eslint",
     "server": "json-server --watch app/_data/db.json --port 3001"
