@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npx prisma generate && next build",
+    "check-env": "node check-env.js",
+    "build": "npm run check-env && npx prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "server": "json-server --watch app/_data/db.json --port 3001"
@@ -32,3 +33,5 @@
     "typescript": "^5"
   }
 }
+
+
