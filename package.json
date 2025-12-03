@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "check-env": "node check-env.js",
+    "check-env": "node scripts/check-env.js",
     "build": "npm run check-env && npx prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
